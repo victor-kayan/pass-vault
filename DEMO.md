@@ -51,9 +51,9 @@ comparar essas decisões com as de um gerenciador de senhas auditado.
 
 ## Vídeo
 
-**Link da demonstração:** adicione aqui o link do vídeo após a gravação.
+**Link da demonstração:** https://www.youtube.com/watch?v=sNfWKOk18LE
 
-### Diagrama 1 — abertura e proteção (mostrar na arquitetura)
+### Diagrama 1 — abertura e proteção
 
 ```mermaid
 flowchart LR
@@ -66,7 +66,7 @@ flowchart LR
     A --> V["Vault cifrado e autenticado"]
 ```
 
-### Diagrama 2 — salvamento (mostrar nas decisões técnicas)
+### Diagrama 2 — salvamento
 
 ```mermaid
 flowchart LR
@@ -77,23 +77,3 @@ flowchart LR
     R --> D["fsync do diretório em POSIX"]
     D --> X["Libera .lock"]
 ```
-
-### Roteiro de gravação (6–8 minutos)
-
-1. **Contexto (45 s):** apresente o problema de guardar senhas recuperáveis e o
-   cenário de roubo do arquivo.
-2. **Arquitetura (60 s):** mostre `main.py`, `vault.py` e `crypto.py`. Explique:
-   senha mestra + salt → Argon2id → chave; entradas + chave + nonce → AES-GCM →
-   arquivo criptografado.
-3. **Execução (3–4 min):** use um vault de demonstração e credenciais fictícias.
-   Rode `init`, `add github --generate`, `list`, `search git`, `count`, `get github`
-   e `get github --show`. Mostre o JSON externo: ele contém salt, parâmetros,
-   nonce e ciphertext, mas não o nome nem a senha da entrada em texto claro.
-4. **Decisões (60 s):** explique por que Argon2id, AES-GCM e gravação
-   atômica/bloqueio resolvem riscos distintos. Diga o que o projeto não protege.
-5. **Validação e fechamento (60 s):** rode `just test` e `just lint`, mostre os
-   resultados e conclua com o principal aprendizado.
-
-Use uma senha mestra criada só para a gravação. Para isolar o exemplo, coloque
-`--vault .demo/vault.json` **antes** de cada comando `pv`. Se esse arquivo já
-existir, escolha outro caminho para que `init` crie um vault novo.
