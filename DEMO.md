@@ -53,6 +53,31 @@ comparar essas decisões com as de um gerenciador de senhas auditado.
 
 **Link da demonstração:** adicione aqui o link do vídeo após a gravação.
 
+### Diagrama 1 — abertura e proteção (mostrar na arquitetura)
+
+```mermaid
+flowchart LR
+    M["Senha mestra digitada"] --> K["Argon2id"]
+    S["Salt público"] --> K
+    K --> C["Chave AES"]
+    C --> A["AES-256-GCM"]
+    P["Credenciais em JSON"] --> A
+    N["Nonce novo"] --> A
+    A --> V["Vault cifrado e autenticado"]
+```
+
+### Diagrama 2 — salvamento (mostrar nas decisões técnicas)
+
+```mermaid
+flowchart LR
+    L["Adquire .lock"] --> U["Lê e altera entradas"]
+    U --> T["Grava temporário"]
+    T --> F["fsync dos dados"]
+    F --> R["os.replace"]
+    R --> D["fsync do diretório em POSIX"]
+    D --> X["Libera .lock"]
+```
+
 ### Roteiro de gravação (6–8 minutos)
 
 1. **Contexto (45 s):** apresente o problema de guardar senhas recuperáveis e o
